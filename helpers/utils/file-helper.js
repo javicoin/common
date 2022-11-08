@@ -1,16 +1,17 @@
 const fs = require('fs');
+const path = require('path');
 
 class FilesHelper {
     /**
      * Returns the content of a given JSON file
      *
-     * @param {string} jsonFile - JSON file path
+     * @param {string} json - JSON file path
      * @returns {Object[]} - JSON file content
      */
-    static processJson(jsonFile) {
-        const fileContent = fs.readFileSync(jsonFile);
+    static getJsonContent(json) {
+        const fileContent = fs.readFileSync(json);
         if (fileContent.length === 0) {
-            console.error(`ERROR! Empty file found: ${jsonFile}`);
+            console.warn(`WARNING! Empty file found: ${json}`);
         }
         return JSON.parse(fileContent);
     }
