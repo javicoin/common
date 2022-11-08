@@ -36,11 +36,14 @@ class FilesHelper {
      * Creates backup directory if it doesn't exist or empties it if it does exist
      *
      * @param {string} directory - path to backup directory
+     * @param {boolean} cleanup - wether to empty the directory or not
      */
-    static prepareBackupDirectory(directory) {
+    static prepareBackupDirectory(directory, cleanup) {
         if (fs.existsSync(directory)) {
-            console.log(`Cleaning existing backup directory: ${directory}`);
-            fs.readdirSync(directory).forEach(file => fs.unlinkSync(path.join(directory, file)));
+            if (cleanup) {
+                console.log(`Cleaning existing backup directory: ${directory}`);
+                fs.readdirSync(directory).forEach(file => fs.unlinkSync(path.join(directory, file)));
+            }            
         } else {
             console.log((`Creating backup directory: ${directory}`));
             fs.mkdirSync(directory);
