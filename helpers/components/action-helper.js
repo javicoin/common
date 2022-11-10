@@ -39,17 +39,34 @@ class ActionHelper {
      * Clicks on a displayed element
      *
      * @param {String} locator
+     * @param waitTimeInMiliSeconds
      *
      */
-    static async click(locator) {
+    static async click(locator, waitTimeInMiliSeconds = 100) {
         try {
             const elem = await $(locator);
-            await this.waitForClickable(elem);
+            await this.waitForDisplayed(elem);
             await elem.click();
-            await this.pause(100);
+            await this.pause(waitTimeInMiliSeconds);
         } catch (error) {
-            console.log("Error while clicking on element: " + error);
-            throw new Error("Error while clicking on element: " + error);
+            throw new Error(`Error while clicking on element '${locator}'\n` + error);
+        }
+    }
+
+    /**
+     * Get Elements list of a given locator
+     *
+     * @param {String} locator
+     * @param waitTimeInMiliSeconds
+     * @returns {string[]} - array of elements sharing same locator
+     */
+     static async getElementList(locator, waitTimeInMiliSeconds = 3000) {
+        try {
+            await this.waitForDisplayed(locator, waitTimeInMiliSeconds);
+            return await $$(locator);
+            
+        } catch (error) {
+            throw new Error(`Error while getting elements list '${locator}'\n` + error);
         }
     }
 
@@ -65,8 +82,7 @@ class ActionHelper {
             const elem = await $(locator);
             await elem.waitForDisplayed(waitTimeInMiliSeconds);
         } catch (error) {
-            console.log("Element not displayed: " + error);
-            throw new Error("Element not displayed: " + error);
+            throw new Error(`Element is not displayed '${locator}'\n` + error);
         }
     }
 
@@ -77,26 +93,46 @@ class ActionHelper {
      * @param waitTimeInMiliSeconds
      *
      */
-         static async waitForClickable(locator, waitTimeInMiliSeconds = 3000) {
-            try{
-                const elem = await $(locator);
-                await elem.waitForClickable(waitTimeInMiliSeconds);
-            } catch (error) {
-                console.log("Element not clickable: " + error);
-                throw new Error("Element not clickable: " + error);
-            }
+     static async waitForClickable(locator, waitTimeInMiliSeconds = 3000) {
+        try{
+            const elem = await $(locator);
+            await elem.waitForClickable(waitTimeInMiliSeconds);
+        } catch (error) {
+            throw new Error(`Element is not clickable '${locator}'\n` + error);
         }
+    }
 
     /**
      * Gets the text value of a given element
      *
      * @param {String} locator
-     *
+     * @returns {String} - text value of the given element
      */
     static async getText(locator) {
-        const elem = await $(locator);
-        await this.waitForDisplayed(elem);
-        return await elem.getText();
+        try {
+            const elem = await $(locator);
+            await this.waitForDisplayed(elem);
+            return await elem.getText();
+        } catch (error) {
+            throw new Error(`Error while setting text on element '${locator}'\n` + error);
+        }
+    }
+
+    /**
+     * Sets the text value of a given element
+     *
+     * @param {String} locator
+     * @param {String} textValue
+     *
+     */
+     static async setText(locator, textValue) {
+        try {
+            const elem = await $(locator);
+            await this.waitForDisplayed(elem);
+            return await elem.setText();
+        } catch (error) {
+            throw new Error(`Error while setting text on element '${locator}'\n` + error);
+        }
     }
 
     /**
