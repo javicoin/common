@@ -14,7 +14,7 @@ class ActionHelper {
      */
      static async launchFreshApp() {
         await driver.resetApp();
-        await driver.launchApp();
+        await this.launchApp();
     }     
 
     /**
@@ -44,9 +44,9 @@ class ActionHelper {
     static async click(locator) {
         try {
             const elem = await $(locator);
-            await elem.waitForDisplayed({ timeout: 1000 });
+            await this.waitForClickable(elem);
             await elem.click();
-            await driver.pause(100);
+            await this.pause(100);
         } catch (error) {
             console.log("Error while clicking on element: " + error);
             throw new Error("Error while clicking on element: " + error);
@@ -60,7 +60,7 @@ class ActionHelper {
      * @param waitTimeInMiliSeconds
      *
      */
-    static async waitForElement(locator, waitTimeInMiliSeconds = 1000) {
+    static async waitForDisplayed(locator, waitTimeInMiliSeconds = 3000) {
         try{
             const elem = await $(locator);
             await elem.waitForDisplayed(waitTimeInMiliSeconds);
@@ -71,6 +71,23 @@ class ActionHelper {
     }
 
     /**
+     * Waits for an element to be clickable
+     *
+     * @param {String} locator
+     * @param waitTimeInMiliSeconds
+     *
+     */
+         static async waitForClickable(locator, waitTimeInMiliSeconds = 3000) {
+            try{
+                const elem = await $(locator);
+                await elem.waitForClickable(waitTimeInMiliSeconds);
+            } catch (error) {
+                console.log("Element not clickable: " + error);
+                throw new Error("Element not clickable: " + error);
+            }
+        }
+
+    /**
      * Gets the text value of a given element
      *
      * @param {String} locator
@@ -78,7 +95,7 @@ class ActionHelper {
      */
     static async getText(locator) {
         const elem = await $(locator);
-        await this.waitForElement(elem);
+        await this.waitForDisplayed(elem);
         return await elem.getText();
     }
 
@@ -96,7 +113,7 @@ class ActionHelper {
             { action: 'moveTo', options: to},
             { action: 'release' }
         ]);
-        await driver.pause(200)
+        await this.pause(200)
     }
 }
 
