@@ -24,7 +24,7 @@ class FilesHelper {
      */
     static editJsonByKey(json, key, value) {
         try {
-            let file = FilesHelper.processJson(json);
+            let file = FilesHelper.getJsonContent(json);
             file[key] = value;
             fs.writeFileSync(json, JSON.stringify(file));
         } catch (error) {

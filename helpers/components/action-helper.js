@@ -64,7 +64,6 @@ class ActionHelper {
         try {
             await this.waitForDisplayed(locator, waitTimeInMiliSeconds);
             return await $$(locator);
-            
         } catch (error) {
             throw new Error(`Error while getting elements list '${locator}'\n` + error);
         }
@@ -114,7 +113,7 @@ class ActionHelper {
             await this.waitForDisplayed(elem);
             return await elem.getText();
         } catch (error) {
-            throw new Error(`Error while setting text on element '${locator}'\n` + error);
+            throw new Error(`Error while getting text on element '${locator}'\n` + error);
         }
     }
 
@@ -129,7 +128,7 @@ class ActionHelper {
         try {
             const elem = await $(locator);
             await this.waitForDisplayed(elem);
-            return await elem.setText();
+            return await elem.setValue(textValue);
         } catch (error) {
             throw new Error(`Error while setting text on element '${locator}'\n` + error);
         }
