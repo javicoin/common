@@ -110,7 +110,7 @@ class ActionHelper {
     static async getText(locator) {
         try {
             const elem = await $(locator);
-            await this.waitForDisplayed(elem);
+            await this.waitForDisplayed(locator);
             return await elem.getText();
         } catch (error) {
             throw new Error(`Error while getting text on element '${locator}'\n` + error);
@@ -127,7 +127,7 @@ class ActionHelper {
      static async setText(locator, textValue) {
         try {
             const elem = await $(locator);
-            await this.waitForDisplayed(elem);
+            await this.waitForDisplayed(locator);
             return await elem.setValue(textValue);
         } catch (error) {
             throw new Error(`Error while setting text on element '${locator}'\n` + error);
