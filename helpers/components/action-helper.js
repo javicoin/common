@@ -45,7 +45,7 @@ class ActionHelper {
     static async click(locator, waitTimeInMiliSeconds = 100) {
         try {
             const elem = await $(locator);
-            await this.waitForDisplayed(elem);
+            await this.waitForDisplayed(locator);
             await elem.click();
             await this.pause(waitTimeInMiliSeconds);
         } catch (error) {
