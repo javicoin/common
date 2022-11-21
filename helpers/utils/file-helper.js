@@ -8,7 +8,7 @@ class FilesHelper {
      * @param {string} json - JSON file path
      * @returns {Object[]} - JSON file content
      */
-    static getJsonContent(json) {
+    static  getJsonContent(json) {
         const fileContent = fs.readFileSync(json);
         if (fileContent.length === 0) {
             console.warn(`WARNING! Empty file found: ${json}`);
@@ -17,9 +17,10 @@ class FilesHelper {
     }
 
     /**
-     * Edits a given JSON file by <key, value>
+     * Adds/Edits a given JSON file by <key, value>
      *
-     * @param {string} key - JSON parameter to be modified
+     * @param {string} json - JSON file to be modified
+     * @param {string} key - JSON parameter to be added or modified
      * @param {string} value - new value for the key parameter
      */
     static editJsonByKey(json, key, value) {
@@ -65,5 +66,24 @@ class FilesHelper {
             .sort((a, b) => fs.statSync(a).ctimeMs - fs.statSync(b).ctimeMs);
     }
 
+    /**
+     * Creates empty json file if it doesn't exist on a given directory
+     *
+     * @param {string} fileName - json file name
+     * @param {string} path - path to json file
+     * @returns {string} - file path
+     */
+    static createJsonFile(fileName, filePath = 'test/resources/files') {
+        const file = path.join(filePath, `${fileName}.json`);
+        try {
+            if (!fs.existsSync(file)) {
+                fs.writeFileSync(file, JSON.stringify({}));
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+        return file;
+    }
 }
+
 module.exports = FilesHelper;
