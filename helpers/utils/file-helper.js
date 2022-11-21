@@ -76,8 +76,12 @@ class FilesHelper {
     static createJsonFile(fileName, filePath = 'test/resources/files') {
         const file = path.join(filePath, `${fileName}.json`);
         try {
-            if (!fs.existsSync(file)) {
-                fs.writeFileSync(file, JSON.stringify({}));
+            if (!fs.existsSync(filePath)) {
+                fs.mkdirSync(filePath, {recursive: true});
+                fs.writeFileSync(file, JSON.stringify({}));             
+            } else {
+                if (!fs.existsSync(file))
+                    fs.writeFileSync(file, JSON.stringify({}));
             }
         } catch (error) {
             throw new Error(error);
